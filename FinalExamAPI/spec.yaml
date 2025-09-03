@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: STD24039
+  description: This is a specification of STD24039
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8000'
+paths:
+  /health:
+    get:
+      description: retourne ok
+      responses:
+        '200':
+          description: ok
+
+  /phones:
+    post:
+      description: créer une liste de phone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Phone'
+      responses:
+        '201':
+          description: List of phone created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Phone'
+    get:
+      description: retourne une liste de phone
+      responses:
+        '200':
+          description: liste de phone
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Phone'
+
+  /phones/{id}:
+    get:
+      description: retourne une phone
+      responses:
+        '200':
+          description: phone found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Phone'
+        '404':
+          description: phone not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Phone not found
+
+  /phones/{id}/characteristics:
+    put:
+      description: changer les characteriistics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ram_memory:
+                  type: number
+                rom_memory:
+                  type: number
+      responses:
+        '200':
+          description: characteristics changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Phone'
+
+
+components:
+  schemas:
+    Phone:
+      type: object
+      properties:
+        identifier:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        characteristics:
+          type: object
+          properties:
+            ram_memory:
+              type: number
+            rom_memory:
+              type: number
